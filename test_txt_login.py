@@ -1,9 +1,8 @@
 import pytest
-from LoginPage import Login
+from LoginPage import LoginPage
 from logger_config import get_logger
 
 logger = get_logger()
-
 
 @pytest.mark.usefixtures("setup")
 class TestLogin:
@@ -12,7 +11,7 @@ class TestLogin:
     def test_001_valid_login(self):
         logger.info("Test started: Valid Login")
 
-        lg = Login(self.driver)
+        lg = LoginPage(self.driver)
 
         assert lg.input_username(username="Admin"), "Failed to input username"
         logger.info("Username entered successfully")
@@ -37,10 +36,9 @@ class TestLogin:
         assert lg.click_login(), "Failed to click login"
         logger.info("Login button clicked")
 
-        try:
-            assert "Invalid credentials" in lg.invalid_mssg()
-            logger.info("Correct error message displayed for invalid username")
-        except AssertionError:
-            logger.error("Error message NOT displayed for invalid username")
-            raise
+
+        assert "Invalid credentials" in lg.invalid_mssg(), "Failed to input invalid username"
+        logger.info("Invalid username entered")
+
+
 
