@@ -1,11 +1,20 @@
-import time
 import pytest
 from selenium import webdriver
-@pytest.fixture()
-def setup(request):
 
-    request.cls.driver = webdriver.Chrome()
-    request.cls.driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login")
-    time.sleep(10)
+
+@pytest.fixture(scope="function")
+def setup(request):
+    driver = webdriver.Chrome()
+    driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login")
+    maximize_window(driver)
+    request.cls.driver = driver
     yield
-    request.cls.driver.quit()
+    driver.quit()
+
+
+def maximize_window(driver):
+    """
+    Maximizes the browser window
+    """
+    driver.maximize_window()
+
